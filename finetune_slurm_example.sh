@@ -11,6 +11,8 @@
 #SBATCH --error=logs/finetune_%j.err
 
 export PROJECT_ROOT="project/root/path"
+export HF_DATASETS_OFFLINE=1
+export TRANSFORMERS_OFFLINE=1
 
 # Required by MN5: srun does not inherit cpus-per-task without this
 export SRUN_CPUS_PER_TASK=${SLURM_CPUS_PER_TASK}

@@ -1,59 +1,42 @@
 import os
 
-from datasets import DatasetDict, concatenate_datasets, load_dataset
+from datasets import load_dataset
+
+PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
+DATA_DIR = os.path.join(PROJECT_ROOT, "data")
+SPLIT_DIR = os.path.join(DATA_DIR, "medical_dataset_split")
+DATASET_NAME = "OpenMed/Medical-Reasoning-SFT-GPT-OSS-120B"
+TEST_SIZE = 0.1
+SEED = 42
 
 
-def prepare_split(
-    dataset_name: str,
-    output_dir: str = "./data/medical_dataset_split",
-    cache_dir: str = "./data",
-    test_size: float = 0.1,
-    seed: int = 42,
-) -> DatasetDict:
-    """
-    Load a Hugging Face dataset, shuffle it, and create train/test splits.
+def format_conversation(example: dict) -> dict:
+    conversation = ""
+    for msg in example["messages"]:
+        conversation += f"{msg['role']}: {msg['content']}\n"
+    return {"text": conversation.strip()}
 
-    Args:
-        dataset_name: Hugging Face dataset ID.
-        output_dir: Local directory to save split dataset.
-        cache_dir: Local directory to cache Hugging Face dataset downloads.
-        test_size: Fraction of examples reserved for test.
-        seed: Random seed for deterministic shuffle/split.
-    """
-    os.makedirs(cache_dir, exist_ok=True)
-    dataset = load_dataset(dataset_name, cache_dir=cache_dir)
 
-    # If the dataset already has a train split, split from that.
-    # Otherwise, combine all available splits so we can define our own holdout.
-    if "train" in dataset:
-        source = dataset["train"]
-    else:
-        source = concatenate_datasets([split for split in dataset.values()])
+def prepare_dataset() -> None:
+    os.makedirs(DATA_DIR, exist_ok=True)
 
-    shuffled = source.shuffle(seed=seed)
-    split_dataset = shuffled.train_test_split(test_size=test_size, seed=seed)
+    print(f"Loading dataset: {DATASET_NAME}")
+    dataset = load_dataset(DATASET_NAME, cache_dir=DATA_DIR)
 
-    split_dataset.save_to_disk(output_dir)
-    return split_dataset
+    print("Formatting conversations...")
+    dataset = dataset.map(format_conversation, remove_columns=dataset["train"].column_names)
+
+    print(f"Creating train/test split (test_size={TEST_SIZE})...")
+    split_dataset = dataset["train"].train_test_split(test_size=TEST_SIZE, seed=SEED)
+
+    print(f"Saving split dataset to: {SPLIT_DIR}")
+    split_dataset.save_to_disk(SPLIT_DIR)
+
+    print("\nDataset split complete:")
+    print(f"  Train examples : {len(split_dataset['train'])}")
+    print(f"  Test examples  : {len(split_dataset['test'])}")
+    print(f"  Saved to       : {SPLIT_DIR}")
 
 
 if __name__ == "__main__":
-    DATASET_NAME = "OpenMed/Medical-Reasoning-SFT-GPT-OSS-120B"
-    OUTPUT_DIR = "./data/medical_dataset_split"
-    CACHE_DIR = "./data"
-    TEST_SIZE = 0.1
-    SEED = 42
-
-    split_dataset = prepare_split(
-        dataset_name=DATASET_NAME,
-        output_dir=OUTPUT_DIR,
-        cache_dir=CACHE_DIR,
-        test_size=TEST_SIZE,
-        seed=SEED,
-    )
-
-    print("Saved dataset split:")
-    print(split_dataset)
-    print(f"\nTrain examples: {len(split_dataset['train'])}")
-    print(f"Test examples:  {len(split_dataset['test'])}")
-    print(f"Saved to: {OUTPUT_DIR}")
+    prepare_dataset()

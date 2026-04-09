@@ -2,6 +2,9 @@
 torch
 torchvision
 
-#other dependencies
-datasets
+# Training dependencies
 transformers
+datasets
+accelerate
+deepspeed
+evaluate

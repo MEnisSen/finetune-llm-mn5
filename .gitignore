@@ -82,3 +82,4 @@ hf_cache/
 .cache/huggingface/
 
 finetune_slurm.sh
+prepare_dataset_slurm.sh
