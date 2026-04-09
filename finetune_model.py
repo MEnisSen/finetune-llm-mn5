@@ -11,8 +11,8 @@ os.makedirs(DATA_DIR, exist_ok=True)
 os.makedirs(MODELS_DIR, exist_ok=True)
 
 dataset = load_dataset("OpenMed/Medical-Reasoning-SFT-GPT-OSS-120B", cache_dir=DATA_DIR)
-model = AutoModelForCausalLM.from_pretrained("your-base-model", cache_dir=MODELS_DIR)
-tokenizer = AutoTokenizer.from_pretrained("your-base-model", cache_dir=MODELS_DIR)
+model = AutoModelForCausalLM.from_pretrained("Qwen/Qwen3.5-4B", cache_dir=MODELS_DIR)
+tokenizer = AutoTokenizer.from_pretrained("Qwen/Qwen3.5-4B", cache_dir=MODELS_DIR)
 
 # Prepare data for training
 def format_conversation(example):
