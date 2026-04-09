@@ -37,5 +37,5 @@ python3 basic_inference.py
 Optional custom prompt/model:
 
 ```bash
-python3 basic_inference.py --model "Qwen/Qwen3.5-9B" --message "Hello, can you explain fine-tuning in one sentence?"
+python3 basic_inference.py --model "Qwen/Qwen3.5-4B" --message "Hello, can you explain fine-tuning in one sentence?"
 ```
