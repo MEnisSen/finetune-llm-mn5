@@ -1,0 +1,82 @@
+# Python cache and compiled files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# Packaging
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# Test and tooling caches
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+.coverage.*
+htmlcov/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# IDE/editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS-generated files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Local environment and secrets
+.env
+.env.*
+
+# ML artifacts and datasets (adjust as needed)
+data/
+datasets/
+checkpoints/
+runs/
+wandb/
+outputs/
+*.pt
+*.pth
+*.ckpt
+
+# Additional model artifacts
+*.bin
+*.safetensors
+*.gguf
+*.onnx
+*.tflite
+*.pb
+*.h5
+*.keras
+*.index
+*.data-00000-of-00001
+*.model
+*.tokenizer.json
+tokenizer.json
+tokenizer_config.json
+special_tokens_map.json
+generation_config.json
+config.json
+
+# Common model/cache directories
+models/
+model/
+hf_cache/
+.cache/huggingface/
