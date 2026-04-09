@@ -80,3 +80,5 @@ models/
 model/
 hf_cache/
 .cache/huggingface/
+
+finetune_slurm.sh
