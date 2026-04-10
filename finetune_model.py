@@ -43,8 +43,8 @@ def main() -> None:
 
     model = AutoModelForCausalLM.from_pretrained(
         MODEL_ID,
-        use_cache=False,
     )
+    model.config.use_cache = False
     model.gradient_checkpointing_enable()
 
     data_collator = DataCollatorForLanguageModeling(tokenizer=tokenizer, mlm=False)

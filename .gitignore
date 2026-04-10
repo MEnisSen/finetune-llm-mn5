@@ -83,3 +83,4 @@ hf_cache/
 
 finetune_slurm.sh
 prepare_dataset_slurm.sh
+finetune_lora_slurm.sh
